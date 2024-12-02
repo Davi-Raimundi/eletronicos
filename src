@@ -1,0 +1,55 @@
+drop database if exists eletronicos;
+create database eletronicos;
+use eletronicos;
+
+create table if not exists produto(
+id_produto int auto_increment primary key,
+nome_produto varchar(100),
+preco decimal(10, 2),
+estoque int
+);
+
+create table if not exists fornecedor(
+id_fornecedor int auto_increment primary key,
+nome_fornecedor varchar(100) not null,
+contato varchar(20)
+);
+
+create table if not exists compra(
+id_compra int auto_increment primary key,
+id_fornecedor int,
+data_compra date,
+foreign key(id_fornecedor) references fornecedor(id_fornecedor) on delete cascade
+);
+
+create table if not exists item(
+id_item int auto_increment primary key,
+id_compra int,
+id_produto int,
+quantidade int not null,
+foreign key(id_compra) references compra(id_compra) on delete cascade,
+foreign key(id_produto) references produto(id_produto) on delete cascade
+);
+
+insert into produto(nome_produto,preco,estoque) values
+('Fone de ouvido gamer',200.00,50),
+('Teclado gamer',150.00,30),
+('Monitor',750.00,20),
+('Mouse gamer',120.00,40),
+('Cadeira gamer',1200.00,50),
+('Computador gamer',4500.00,10);
+
+insert into fornecedor(nome_fornecedor,contato) values
+('Paulo','48960484761'),
+('João','48901768911'),
+('Miguel','48908548712');
+
+insert into compra(data_compra) values
+('2024-12-30'),
+('2024-12-01');
+
+insert into item(quantidade) values
+(30),
+(20);
+
+select * from produto,fornecedor,compra,item
